@@ -1,4 +1,7 @@
 
+# 🧙‍♂️ On development
+
+
 I've always found myself dreaming of having a cafe shop, a cafe shop for introverts, The idea is came from when was ordering at a cafe shop, i always feel uncomfortable
 standing in front of a cashier. So I made this app, a mobile app for now, but i will turn it into a web so that customers can easily access the system. 
 The customers will order thru an site, but the site is only accessible on the located cafe. the customer will scan something like qr and then it query the customer
