@@ -40,7 +40,6 @@ export type RootStackParamList = {
 
 export type User = {
   name: string;
-  id: number;
 }
 
 

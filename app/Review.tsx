@@ -23,7 +23,7 @@ export default function Review() {
 
   return (
     <View style={styles.container}>  
-        <CustomerDetails name={user.name} id={user.id}/>
+        <CustomerDetails name={user.name}/>
         <Indicator />
         {order.map((item: Quantity, indexID: any) => (
           <View key={indexID} style={styles.main}>

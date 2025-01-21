@@ -2,11 +2,10 @@ import { View, Text, StyleSheet } from 'react-native';
 import { User } from '../types/cafe';
 
 
-export default function CustomerDetails({name, id}: User) {
+export default function CustomerDetails({name}: User) {
   return(
       <View style={styles.main}>
         <Text>{name}</Text>
-        <Text>{id}</Text>
       </View> 
   );
 }
