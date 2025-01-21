@@ -1,19 +1,21 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Button } from "react-native";
 import { currentState } from "../contexts/OrderReview";
-import { Product } from "../types/cafe";
+import { Product, RootStackParamList } from "../types/cafe";
 import { useEffect, useState } from "react";
+import{ StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 import axios from "axios";
- 
 
-type Para = {
-  product: string;
-  id: number;
-}
+
+
+type Nav = StackNavigationProp<RootStackParamList>;
+
 
 
 
 export default function Options() {
   const [data, setData] = useState<Product[]>([])
+  const navigation = useNavigation<Nav>();
   const { setCurrentState } = currentState();
 
   const addQuantity = (name: string, id: number) => {
@@ -48,6 +50,10 @@ export default function Options() {
   }, []);
   
 
+  const toNextPage = () => {
+    navigation.navigate("Review");
+  }
+
 
   
   return(
@@ -64,6 +70,7 @@ export default function Options() {
             </TouchableOpacity>
         </View>
     ))} 
+    <Button title="Review" onPress={toNextPage}/>
     </View>
   );
 }
