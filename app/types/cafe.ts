@@ -1,5 +1,3 @@
-
-
 export type Order = {
   message: string;
   order: {
@@ -11,35 +9,31 @@ export type Order = {
       productId: number;
       quantity: number;
       orderId: number;
-    }
-  }
-}
-
+    };
+  };
+};
 
 export type Product = {
-  name: string,
-  price: number,
-  id: number,
-}
-
+  name: string;
+  price: number;
+  id: number;
+  picture: string;
+};
 
 export type Quantity = {
   productName: string;
   quantity: number;
-  id: number,
-}
-
+  id: number;
+  price: number;
+};
 
 export type RootStackParamList = {
   Homescreen: undefined;
   Menu: undefined;
-  Review: undefined;  
+  Review: undefined;
   Ordered: undefined;
 };
 
-
 export type User = {
   name: string;
-}
-
-
+};

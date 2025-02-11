@@ -1,31 +1,25 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const UserController = {
-
   getProduct: async (req, res) => {
     try {
-      const result = await prisma.Product.findMany();
+      const result = await prisma.product.findMany();
       res.status(200).json({ data: result });
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching products:", error);
       res.status(500).json({ error: "Failed to fetch products." });
     }
   },
 
-
   postUser: async (req, res) => {
     const { name } = req.body;
-
-    if (!name) {
-      return res.status(400).json({ error: "Name is required." });
-    }
 
     try {
       const result = await prisma.Customer.create({
         data: {
           name: name,
-        }
+        },
       });
 
       res.status(201).json({
@@ -33,21 +27,22 @@ const UserController = {
         data: result,
       });
     } catch (error) {
-      console.error('Error saving product:', error);
-      res.status(500).json({ error: 'Failed to save product to the database.' });
+      console.error("Error saving product:", error);
+      res
+        .status(500)
+        .json({ error: "Failed to save product to the database." });
     }
   },
 
-
   customerOrder: async (req, res) => {
-    const { customerId, customerItem  } = req.body;
+    const { customerId, customerItem } = req.body;
 
     try {
       const order = await prisma.Order.create({
         data: {
           customerId,
           orderItems: {
-            create: customerItem.map(item => ({
+            create: customerItem.map((item) => ({
               productId: item.productId,
               quantity: item.quantity,
             })),
@@ -60,19 +55,16 @@ const UserController = {
             },
           },
         },
-      })
+      });
       res.status(201).json({
         message: "Thank you for purchasing!!",
         order: order,
       });
     } catch (error) {
-      console.error('Error creating order:', error);
-      res.status(500).json({ error: 'Failed to create order.' });
+      console.error("Error creating order:", error);
+      res.status(500).json({ error: "Failed to create order." });
     }
-  }
-
-
-  
+  },
 };
 
 module.exports = UserController;

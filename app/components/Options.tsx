@@ -1,110 +1,134 @@
-import { StyleSheet, Text, View, TouchableOpacity, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Button,
+  ScrollView,
+} from "react-native";
 import { currentState } from "../contexts/OrderReview";
 import { Product, RootStackParamList } from "../types/cafe";
 import { useEffect, useState } from "react";
-import{ StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from "@react-navigation/stack";
+import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-
-
+import Coffee from "./Coffee";
 
 type Nav = StackNavigationProp<RootStackParamList>;
 
-
-
-
 export default function Options() {
-  const [data, setData] = useState<Product[]>([])
+  const [data, setData] = useState<Product[]>([]);
   const navigation = useNavigation<Nav>();
   const { setCurrentState } = currentState();
 
-  const addQuantity = (name: string, id: number) => {
+  const addQuantity = (name: string, id: number, price: number) => {
     setCurrentState((prevArray: any) => {
-        const arrayObjects = [...prevArray];
-        const existingProductIndex = arrayObjects.findIndex((obj) => obj.productName === name);
-  
-        if (existingProductIndex !== -1) {
-            arrayObjects[existingProductIndex].quantity += 1;
-        } else {``
-            const objectArr = {
-                productName: name,
-                quantity: 1,
-                id: id,
-            }; 
-            arrayObjects.push(objectArr);
-        }
-        return arrayObjects;
+      const arrayObjects = [...prevArray];
+      const existingProductIndex = arrayObjects.findIndex(
+        (obj) => obj.productName === name
+      );
+
+      if (existingProductIndex !== -1) {
+        arrayObjects[existingProductIndex].quantity += 1;
+      } else {
+        const objectArr = {
+          productName: name,
+          quantity: 1,
+          id: id,
+          price: price,
+        };
+        arrayObjects.push(objectArr);
+      }
+      return arrayObjects;
     });
   };
 
-
-  useEffect(() => {   
+  useEffect(() => {
     axios
-        .get("http://192.168.254.103:3000/product")
-        .then((response) => {
-            setData(response.data.data); 
-        })
-        .catch((error) => {
-            console.error("Error fetching data:", error);
-        });
+      .get("http://192.168.254.101:3000/product")
+      .then((response) => {
+        setData(response.data.data);
+        console.log(response.data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   }, []);
-  
 
   const toNextPage = () => {
     navigation.navigate("Review");
-  }
+  };
 
-
-  
-  return(
+  return (
     <View style={styles.container}>
-    {data.map((item, index) => (
-        <View key={item.id} style={styles.probox}>
-            <TouchableOpacity onPress={() => addQuantity(item.name, item.id)}>
-                <View style={styles.placeholder}></View>
-                <Text style={styles.text}>
-                    {item.name}
-                    {"\n"}
-                    {item.price}  
-                </Text>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        {data.map((item) => (
+          <View key={item.id} style={styles.probox}>
+            <TouchableOpacity
+              onPress={() => addQuantity(item.name, item.id, item.price)}
+            >
+              <View style={styles.placeholder}>
+                <Coffee path={item.picture} />
+              </View>
+              <Text style={styles.text}>
+                {item.name}
+                {"\t"}
+                {item.price}
+              </Text>
             </TouchableOpacity>
-        </View>
-    ))} 
-    <Button title="Review" onPress={toNextPage}/>
+          </View>
+        ))}
+      </ScrollView>
+
+      {/* Fixed Button */}
+      <View style={styles.fixedButton}>
+        <Button title="Review" onPress={toNextPage} />
+      </View>
     </View>
   );
 }
 
-
-
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "flex-start",
+    flex: 1, // Ensures full height
+  },
+  scrollContainer: {
+    paddingTop: 10,
+    paddingBottom: 100, // Ensures last item isn't hidden behind button
     flexDirection: "row",
     flexWrap: "wrap",
-    paddingTop: 10,
+    justifyContent: "center",
+    alignItems: "flex-start",
+  },
+  probox: {
+    margin: 10,
+    width: "40%",
+    height: 200,
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
   text: {
     textAlign: "center",
     marginBottom: 10,
   },
   placeholder: {
-      width: 100,
-      height: 100,
-      backgroundColor: "lightgray",
-      marginBottom: 25,
-  },
-  probox: { 
-    margin: 10,
-    width: "40%",
-    height: 200,
-    borderWidth: 1,
-    fontSize: 18,
-    color: "black",
-    textAlign: "center",    
-    justifyContent: "flex-end",
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
-},
+    width: 100,
+  },
+  fixedButton: {
+    position: "absolute",
+    bottom: 0, // Keeps it at the very bottom of the screen
+    left: 0,
+    right: 0,
+    padding: 10,
+    backgroundColor: "white", // Optional: background to stand out
+    alignItems: "center",
+    elevation: 5, // Shadow for Android
+    shadowColor: "#000", // Shadow for iOS
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+  },
 });

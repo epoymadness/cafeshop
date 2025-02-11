@@ -1,15 +1,13 @@
-import { View, Text, StyleSheet } from 'react-native';
-import { User } from '../types/cafe';
+import { View, Text, StyleSheet } from "react-native";
+import { User } from "../types/cafe";
 
-
-export default function CustomerDetails({name}: User) {
-  return(
-      <View style={styles.main}>
-        <Text>{name}</Text>
-      </View> 
+export default function CustomerDetails({ name }: User) {
+  return (
+    <View style={styles.main}>
+      <Text>{name}</Text>
+    </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   main: {
@@ -17,10 +15,10 @@ const styles = StyleSheet.create({
     height: 50,
     borderWidth: 1,
     marginTop: 10,
-    justifyContent: 'flex-start',
+    justifyContent: "flex-start",
     alignItems: "center",
-    gap: '60%',
-    flexDirection: 'row',
+    gap: "60%",
+    flexDirection: "row",
     padding: 10,
-  }
-})
+  },
+});
